@@ -1,6 +1,15 @@
 'use strict'
 
-angular.module('<%= scriptAppName %>', [<%= angularModules %>])<% if (ngRoute) { %>
+###*
+ # @ngdoc overview
+ # @name <%= scriptAppName %>
+ # @description
+ # # <%= scriptAppName %>
+ #
+ # Main module of the application.
+###
+angular
+  .module('<%= scriptAppName %>', [<%= angularModules %>])<% if (ngRoute) { %>
   .config ($routeProvider) ->
     $routeProvider
       .when '/',

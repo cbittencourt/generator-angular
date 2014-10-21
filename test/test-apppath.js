@@ -5,16 +5,17 @@ var path = require('path');
 var helpers = require('yeoman-generator').test;
 var _ = require('underscore.string');
 
-describe('Angular generator', function () {
+describe('Angular generator appPath option', function () {
   var angular;
+  var appPath = 'customAppPath';
   var expected = [
-    'app/.htaccess',
-    'app/404.html',
-    'app/favicon.ico',
-    'app/robots.txt',
-    'app/styles/main.scss',
-    'app/views/main.html',
-    'app/index.html',
+    appPath + '/.htaccess',
+    appPath + '/404.html',
+    appPath + '/favicon.ico',
+    appPath + '/robots.txt',
+    appPath + '/styles/main.scss',
+    appPath + '/views/main.html',
+    appPath + '/index.html',
     '.bowerrc',
     '.editorconfig',
     '.gitignore',
@@ -30,7 +31,7 @@ describe('Angular generator', function () {
     modules: []
   };
   var genOptions = {
-    'appPath': 'app',
+    'appPath': appPath,
     'skip-install': true,
     'skip-welcome-message': true,
     'skip-message': true
@@ -41,6 +42,7 @@ describe('Angular generator', function () {
       if (err) {
         done(err);
       }
+
       angular = helpers.createGenerator(
         'angular:app',
         [
@@ -62,7 +64,7 @@ describe('Angular generator', function () {
   });
 
   describe('App files', function () {
-    it('should generate dotfiles', function (done) {
+    it('should generate dotfiles for apppath', function (done) {
       angular.run({}, function () {
         helpers.assertFile(expected);
         done();
@@ -72,8 +74,8 @@ describe('Angular generator', function () {
     it('creates expected JS files', function (done) {
       angular.run({}, function() {
         helpers.assertFile([].concat(expected, [
-          'app/scripts/app.js',
-          'app/scripts/controllers/main.js',
+          appPath + '/scripts/app.js',
+          appPath + '/scripts/controllers/main.js',
           'test/spec/controllers/main.js'
         ]));
         done();
@@ -84,8 +86,8 @@ describe('Angular generator', function () {
       angular.env.options.coffee = true;
       angular.run([], function () {
         helpers.assertFile([].concat(expected, [
-          'app/scripts/app.coffee',
-          'app/scripts/controllers/main.coffee',
+          appPath + '/scripts/app.coffee',
+          appPath + '/scripts/controllers/main.coffee',
           'test/spec/controllers/main.coffee'
         ]));
         done();
@@ -95,24 +97,18 @@ describe('Angular generator', function () {
 
   describe('Service Subgenerators', function () {
     var generatorTest = function (generatorType, specType, targetDirectory, scriptNameFn, specNameFn, suffix, done) {
+      var angularGenerator;
       var name = 'foo';
       var deps = [path.join('../..', generatorType)];
-      var genTester = helpers.createGenerator('angular:' + generatorType, deps, [name], genOptions);
+      angularGenerator = helpers.createGenerator('angular:' + generatorType, deps, [name], genOptions);
 
       angular.run([], function () {
-        genTester.run([], function () {
+        angularGenerator.run([], function () {
           helpers.assertFileContent([
             [
-              path.join('app/scripts', targetDirectory, name + '.js'),
+              path.join(appPath + '/scripts', targetDirectory, name + '.js'),
               new RegExp(
                 generatorType + '\\(\'' + scriptNameFn(name) + suffix + '\'',
-                'g'
-              )
-            ],
-            [
-              path.join('test/spec', targetDirectory, name + '.js'),
-              new RegExp(
-                'describe\\(\'' + _.classify(specType) + ': ' + specNameFn(name) + suffix + '\'',
                 'g'
               )
             ]
@@ -151,10 +147,12 @@ describe('Angular generator', function () {
       var deps = ['../../view'];
       angularView = helpers.createGenerator('angular:view', deps, ['foo'], genOptions);
 
-      helpers.mockPrompt(angularView, mockPrompts);
-      angularView.run([], function () {
-        helpers.assertFile(['app/views/foo.html']);
-        done();
+      helpers.mockPrompt(angular, mockPrompts);
+      angular.run([], function () {
+        angularView.run([], function () {
+          helpers.assertFile([appPath + '/views/foo.html']);
+          done();
+        });
       });
     });
 
@@ -163,10 +161,12 @@ describe('Angular generator', function () {
       var deps = ['../../view'];
       angularView = helpers.createGenerator('angular:view', deps, ['foo/bar'], genOptions);
 
-      helpers.mockPrompt(angularView, mockPrompts);
-      angularView.run([], function () {
-        helpers.assertFile(['app/views/foo/bar.html']);
-        done();
+      helpers.mockPrompt(angular, mockPrompts);
+      angular.run([], function () {
+        angularView.run([], function () {
+          helpers.assertFile([appPath + '/views/foo/bar.html']);
+          done();
+        });
       });
     });
   });

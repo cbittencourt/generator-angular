@@ -1,7 +1,8 @@
-# AngularJS generator [![Build Status](https://secure.travis-ci.org/yeoman/generator-angular.png?branch=master)](http://travis-ci.org/yeoman/generator-angular) [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+# AngularJS generator [![Build Status](https://secure.travis-ci.org/yeoman/generator-angular.svg?branch=master)](http://travis-ci.org/yeoman/generator-angular)
 
-> Yeoman generator for AngularJS - lets you quickly set up a project with sensible defaults and best practises.
+> Yeoman generator for AngularJS - lets you quickly set up a project with sensible defaults and best practices.
 
+[Roadmap for upcoming plans/features/fixes](https://github.com/yeoman/generator-angular/issues/553)
 
 ## Usage
 
@@ -37,13 +38,13 @@ Available generators:
 * [angular:factory](#service)
 * [angular:value](#service)
 * [angular:constant](#service)
-* [angular:decorator] (#decorator)
+* [angular:decorator](#decorator)
 * [angular:view](#view)
 
 **Note: Generators are to be run from the root directory of your app.**
 
 ### App
-Sets up a new AngularJS app, generating all the boilerplate you need to get started. The app generator also optionally installs Twitter Bootstrap and additional AngularJS modules, such as angular-resource (installed by default).
+Sets up a new AngularJS app, generating all the boilerplate you need to get started. The app generator also optionally installs Bootstrap and additional AngularJS modules, such as angular-resource (installed by default).
 
 Example:
 ```bash
@@ -69,6 +70,16 @@ Produces `app/views/myroute.html`:
 ```html
 <p>This is the myroute view</p>
 ```
+
+**Explicitly provide route URI**
+
+Example:
+```bash
+yo angular:route myRoute --uri=my/route
+```
+
+Produces controller and view as above and adds a route to `app/scripts/app.js`
+with URI `my/route`
 
 ### Controller
 Generates a controller in `app/scripts/controllers`.
@@ -281,6 +292,10 @@ When submitting a PR, make sure that the commit messages match the [AngularJS co
 When submitting a bugfix, write a test that exposes the bug and fails before applying your fix. Submit the test alongside the fix.
 
 When submitting a new feature, add tests that cover the feature.
+
+## Changelog
+
+Recent changes can be viewed on Github on the [Releases Page](https://github.com/yeoman/generator-angular/releases)
 
 ## License
 
